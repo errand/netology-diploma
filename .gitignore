@@ -16,3 +16,4 @@ yarn-error.log
 /.vscode
 laravel
 _markup
+Nginx_1.21_vhost.conf
