@@ -14,6 +14,15 @@ class Hall extends Model
      */
     public function movies()
     {
-        return $this->hasMany(Movie::class);
+        return $this->hasManyThrough(Movie::class, Showtime::class);
+    }
+
+
+    /**
+     * Get the showtimes for the movie.
+     */
+    public function showtimes()
+    {
+        return $this->hasMany(Showtime::class);
     }
 }

@@ -13,7 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('showtimes', function (Blueprint $table) {
+            $table->id();
+            $table->dateTime('time', $precision = 0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('showtimes');
     }
 };

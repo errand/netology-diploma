@@ -10,10 +10,18 @@ class Movie extends Model
     use HasFactory;
 
     /**
-     * Get the movies for the hall.
+     * Get the halls for the movie.
      */
     public function halls()
     {
-        return $this->hasMany(Hall::class);
+        return $this->hasManyThrough(Hall::class, Showtime::class);
+    }
+
+    /**
+     * Get the showtimes for the movie.
+     */
+    public function showtimes()
+    {
+        return $this->hasMany(Showtime::class);
     }
 }
