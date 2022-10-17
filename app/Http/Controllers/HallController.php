@@ -13,11 +13,16 @@ class HallController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
+        $halls = DB::table('halls')->paginate(10);
+
+        return Inertia::render('Manager', [
+            'extraClass' => 'admin',
+            'halls' => $halls
+        ]);
     }
 
     /**
@@ -42,11 +47,7 @@ class HallController extends Controller
         $hall = new Hall($request->validated());
         $hall->save();
 
-        $halls = DB::table('halls')->paginate(10);
-
-        return Inertia::render('Manager', [
-            'halls' => $halls,
-        ]);
+        return redirect()->route('manager')->with('message', 'Post Delete Successfully');
     }
 
     /**
@@ -86,11 +87,12 @@ class HallController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Hall  $hall
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hall $hall)
+    public function destroy($id)
     {
-        //
+        Hall::destroy($id);
+        return redirect()->route('manager');
     }
 }

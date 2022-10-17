@@ -57,6 +57,10 @@ body.admin {
 
 .admin {
 
+    .error {
+        color: red;
+    }
+
     input[type='radio'], input[type='submit'], button, .conf-step__header, select {
         cursor: pointer;
     }

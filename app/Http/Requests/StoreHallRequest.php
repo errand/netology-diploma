@@ -24,11 +24,11 @@ class StoreHallRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:100'],
-            'rows' => ['required', 'max:100'],
-            'seats_in_row' => ['required', 'max:100'],
-            'vip_price' => ['required', 'max:100'],
-            'common_price' => ['required', 'max:100'],
+            'name' => ['string', 'required', 'max:100'],
+            'rows' => ['integer', 'required', 'max:100'],
+            'seats_in_row' => ['integer', 'required', 'max:100'],
+            'vip_price' => ['numeric', 'required'],
+            'common_price' => ['numeric', 'required'],
             'open_sale' => [],
         ];
     }

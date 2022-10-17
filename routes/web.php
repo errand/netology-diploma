@@ -27,16 +27,11 @@ Route::get('/', function () {
 
 Route::middleware(['verified', 'auth'])->group(function () {
 
-    Route::get('/manager', function () {
-        return Inertia::render('Manager', [
-            'extraClass' => 'admin',
-        ]);
-    })->name('manager');
+    Route::get('/manager', '\App\Http\Controllers\HallController@index')->name('manager');
 
     /*
      * Halls
      */
-    Route::get('halls', '\App\Http\Controllers\HallController@index')->name('halls');
     Route::post('halls', '\App\Http\Controllers\HallController@store')->name('halls.store');
     Route::delete('halls/{id}','\App\Http\Controllers\HallController@destroy')->name('halls.destroy');
 
