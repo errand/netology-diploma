@@ -10,6 +10,20 @@ class Hall extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'rows',
+        'seats_in_row',
+        'vip_price',
+        'common_price',
+        'open_sale',
+    ];
+
+    /**
      * Get the movies for the hall.
      */
     public function movies()

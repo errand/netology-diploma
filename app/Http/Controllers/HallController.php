@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hall;
 use App\Http\Requests\StoreHallRequest;
+use App\Models\Hall;
 use App\Http\Requests\UpdateHallRequest;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class HallController extends Controller
 {
@@ -32,11 +34,19 @@ class HallController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreHallRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function store(StoreHallRequest $request)
     {
-        //
+
+        $hall = new Hall($request->validated());
+        $hall->save();
+
+        $halls = DB::table('halls')->paginate(10);
+
+        return Inertia::render('Manager', [
+            'halls' => $halls,
+        ]);
     }
 
     /**

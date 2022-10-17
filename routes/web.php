@@ -25,10 +25,22 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard', [
-        'extraClass' => 'admin',
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['verified', 'auth'])->group(function () {
+
+    Route::get('/manager', function () {
+        return Inertia::render('Manager', [
+            'extraClass' => 'admin',
+        ]);
+    })->name('manager');
+
+    /*
+     * Halls
+     */
+    Route::get('halls', '\App\Http\Controllers\HallController@index')->name('halls');
+    Route::post('halls', '\App\Http\Controllers\HallController@store')->name('halls.store');
+    Route::delete('halls/{id}','\App\Http\Controllers\HallController@destroy')->name('halls.destroy');
+
+});
+
 
 require __DIR__.'/auth.php';

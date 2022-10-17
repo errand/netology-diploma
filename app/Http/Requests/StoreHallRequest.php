@@ -13,7 +13,7 @@ class StoreHallRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class StoreHallRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'max:100'],
+            'rows' => ['required', 'max:100'],
+            'seats_in_row' => ['required', 'max:100'],
+            'vip_price' => ['required', 'max:100'],
+            'common_price' => ['required', 'max:100'],
+            'open_sale' => [],
         ];
     }
 }
