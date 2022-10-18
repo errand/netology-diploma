@@ -39,4 +39,21 @@ class Hall extends Model
     {
         return $this->hasMany(Showtime::class);
     }
+
+    /**
+     * Get the Seats for the Hall.
+     */
+    public function seats()
+    {
+        return $this->hasMany(Seat::class);
+    }
+
+    /**
+     * Delete Seats in the Hall on Hall delete
+     */
+    public function delete()
+    {
+        $this->seats()->delete();
+        return parent::delete();
+    }
 }

@@ -33,6 +33,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
      * Halls
      */
     Route::post('halls', '\App\Http\Controllers\HallController@store')->name('halls.store');
+    Route::get('halls/{id}','\App\Http\Controllers\HallController@show')->name('halls.show');
     Route::delete('halls/{id}','\App\Http\Controllers\HallController@destroy')->name('halls.destroy');
 
 });

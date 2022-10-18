@@ -5,6 +5,7 @@ import { Head, usePage } from '@inertiajs/inertia-react';
 import ToggleBodyClass from '../Components/ToggleBodyClass'
 import Accordion from '@/Components/Accordion';
 import Modal from '@/Components/Modal';
+import HallConfiguration from "@/Components/HallConfiguration";
 
 export default function Manager(props) {
     const { halls, errors } = usePage().props;
@@ -99,54 +100,58 @@ export default function Manager(props) {
                         <button className="conf-step__button conf-step__button-accent" onClick={handleAddHallClick}>Создать зал</button>
                     </Accordion.Content>
                 </Accordion>
-                <Modal open={showHallModal} handleClose={hideHallModal}>
-                    <Modal.Header>
-                        Добавить зал
-                    </Modal.Header>
-                    <Modal.Content>
-                        <form onSubmit={handleHallSubmit}>
-                            <div className="form-group">
-                                <label>Название зала</label>
-                                <input name="name" onChange={handleHallModalFormChange} />
-                                {errors.name && <div className="error">{errors.name}</div> }
-                            </div>
-                            <div className="form-group">
-                                <label>Количество рядов</label>
-                                <input name="rows" onChange={handleHallModalFormChange} />
-                                {errors.rows && <div className="error">{errors.rows}</div> }
-                            </div>
-                            <div className="form-group">
-                                <label>Количество сидений в ряду</label>
-                                <input name="seats_in_row" onChange={handleHallModalFormChange} />
-                                {errors.seats_in_row && <div className="error">{errors.seats_in_row}</div> }
-                            </div>
-                            <div className="form-group">
-                                <label>Цена VIP мест</label>
-                                <input name="vip_price" onChange={handleHallModalFormChange} />
-                                {errors.vip_price && <div className="error">{errors.vip_price}</div> }
-                            </div>
-                            <div className="form-group">
-                                <label>Цена простых мест</label>
-                                <input name="common_price" onChange={handleHallModalFormChange} />
-                                {errors.common_price && <div className="error">{errors.common_price}</div> }
-                            </div>
-                            {sending && !errors && <div>spinner</div> }
-                            <button className="conf-step__button conf-step__button-accent">Создать зал</button>
-                        </form>
-                    </Modal.Content>
-                </Modal>
-                <Modal open={showDeleteHallModal} handleClose={hideDeleteHallModal}>
-                    <Modal.Header>
-                        Удалить зал?
-                    </Modal.Header>
-                    <Modal.Content>
-                        <form onSubmit={handleDeleteHallSubmit}>
-                            {sending && !errors && <div>spinner</div> }
-                            <button className="conf-step__button conf-step__button-accent">Удалить зал</button>
-                        </form>
-                    </Modal.Content>
-                </Modal>
+                {halls.data.length > 0 &&
+                    <HallConfiguration halls={halls}></HallConfiguration>
+                }
             </main>
+            <Modal open={showHallModal} handleClose={hideHallModal}>
+                <Modal.Header>
+                    Добавить зал
+                </Modal.Header>
+                <Modal.Content>
+                    <form onSubmit={handleHallSubmit}>
+                        <div className="form-group">
+                            <label>Название зала</label>
+                            <input name="name" onChange={handleHallModalFormChange} />
+                            {errors.name && <div className="error">{errors.name}</div> }
+                        </div>
+                        <div className="form-group">
+                            <label>Количество рядов</label>
+                            <input name="rows" onChange={handleHallModalFormChange} />
+                            {errors.rows && <div className="error">{errors.rows}</div> }
+                        </div>
+                        <div className="form-group">
+                            <label>Количество сидений в ряду</label>
+                            <input name="seats_in_row" onChange={handleHallModalFormChange} />
+                            {errors.seats_in_row && <div className="error">{errors.seats_in_row}</div> }
+                        </div>
+                        <div className="form-group">
+                            <label>Цена VIP мест</label>
+                            <input name="vip_price" onChange={handleHallModalFormChange} />
+                            {errors.vip_price && <div className="error">{errors.vip_price}</div> }
+                        </div>
+                        <div className="form-group">
+                            <label>Цена простых мест</label>
+                            <input name="common_price" onChange={handleHallModalFormChange} />
+                            {errors.common_price && <div className="error">{errors.common_price}</div> }
+                        </div>
+                        {sending && !errors && <div>spinner</div> }
+                        <button className="conf-step__button conf-step__button-accent">Создать зал</button>
+                    </form>
+                </Modal.Content>
+            </Modal>
+            <Modal open={showDeleteHallModal} handleClose={hideDeleteHallModal}>
+                <Modal.Header>
+                    Удалить зал?
+                </Modal.Header>
+                <Modal.Content>
+                    <form onSubmit={handleDeleteHallSubmit}>
+                        {sending && !errors && <div>spinner</div> }
+                        <button className="conf-step__button conf-step__button-accent">Удалить зал</button>
+                    </form>
+                </Modal.Content>
+            </Modal>
+
         </AuthenticatedLayout>
     );
 }
