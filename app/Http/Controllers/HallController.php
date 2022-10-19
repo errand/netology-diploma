@@ -69,14 +69,7 @@ class HallController extends Controller
      */
     public function show($id)
     {
-        $hall = Hall::find($id)->first();
-        $halls = DB::table('halls')->paginate(10);
-
-        return Inertia::render('Manager', [
-            'extraClass' => 'admin',
-            'halls' => $halls,
-            'activeHall' => $hall,
-        ]);
+        return Hall::find($id)->first();
     }
 
     /**

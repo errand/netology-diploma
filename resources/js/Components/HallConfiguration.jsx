@@ -1,15 +1,15 @@
 import React, {useState} from "react";
-import {Inertia} from "@inertiajs/inertia";
 import Accordion from "@/Components/Accordion";
 import HallConfigurationForm from "@/Components/HallConfigurationForm";
 
-export default function HallConfiguration({ halls, activeHall }) {
+export default function HallConfiguration({ halls }) {
+
+    const [activeHall, setActiveHall] = useState('')
 
     const handleSelectHallClick = (id) => {
-        Inertia.get(route('halls.show', id, {
-            onSuccess: () => {
-            }
-        }));
+        fetch(route('halls.show', id))
+            .then(response => response.json())
+            .then(request => setActiveHall(request));
     }
 
     return (
