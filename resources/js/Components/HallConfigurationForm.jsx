@@ -45,7 +45,7 @@ export default function HallConfiguration({ hall }) {
 
                     <div className="conf-step__hall">
                         <div className={`conf-step__hall-wrapper grid-cols-${hall.seats_in_row}`} style={colsNumberStyle}>
-                            {seatsInHall.map(seat => <Seat seat={seat} />)}
+                            {seatsInHall.map(seat => <Seat seat={seat} hall={hall.id} key={seat.id} />)}
                         </div>
                     </div>
 
