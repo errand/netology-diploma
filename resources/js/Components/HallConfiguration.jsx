@@ -4,7 +4,7 @@ import HallConfigurationForm from "@/Components/HallConfigurationForm";
 
 export default function HallConfiguration({ halls }) {
 
-    const [activeHall, setActiveHall] = useState('')
+    const [activeHall, setActiveHall] = useState('');
 
     const handleSelectHallClick = (id) => {
         fetch(route('halls.show', id))
@@ -15,7 +15,6 @@ export default function HallConfiguration({ halls }) {
     return (
         <Accordion>
             <Accordion.Trigger>
-                {console.log(activeHall)}
                 Конфигурация залов
             </Accordion.Trigger>
             <Accordion.Content>
@@ -34,7 +33,8 @@ export default function HallConfiguration({ halls }) {
                             </li>)
                     }
                 </ul>
-                <HallConfigurationForm></HallConfigurationForm>
+                {activeHall && <HallConfigurationForm hall={activeHall} />}
+
             </Accordion.Content>
         </Accordion>
     );

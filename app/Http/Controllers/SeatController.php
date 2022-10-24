@@ -42,12 +42,26 @@ class SeatController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Seat  $seat
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Seat $seat)
+    public function show($id)
     {
-        //
+        return Seat::find($id)->first();
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $hall_id
+     * @param  int  $number
+     * @return \Illuminate\Http\Response
+     */
+    public function showSeatsInHall($hall_id)
+    {
+        return Seat::where('hall_id', $hall_id)->get();
+
     }
 
     /**

@@ -1,9 +1,23 @@
-import Accordion from "@/Components/Accordion";
-import React, {useState} from "react";
-import {Inertia} from "@inertiajs/inertia";
+import React, {useEffect, useState} from "react";
+import Seat from "@/Components/Seat";
 
 export default function HallConfiguration({ hall }) {
 
+    const [rows, setRows] = useState(hall.rows);
+    const [seats, setSeats] = useState(hall.seats_in_row);
+    const [seatsInHall, setSeatsInHall] = useState([]);
+
+    const colsNumberStyle = {
+        gridTemplateColumns:`repeat(${hall.seats_in_row}, 1fr)`,
+        display: 'grid',
+        gap: '10px'
+    };
+
+    useEffect(() => {
+        fetch(route('seats.showSeatsInHall', hall.id))
+            .then(response => response.json())
+            .then(request => setSeatsInHall(request))
+    })
 
     return (
         <>
@@ -11,10 +25,14 @@ export default function HallConfiguration({ hall }) {
                         ряду:</p>
                     <div className="conf-step__legend">
                         <label className="conf-step__label">Рядов, шт<input type="text" className="conf-step__input"
-                                                                            placeholder="10" /></label>
+                                                                            placeholder={hall.rows}
+                                                                            value={rows}
+                                                                            onChange={(e) => setRows(e.target.value)} /></label>
                         <span className="multiplier">x</span>
                         <label className="conf-step__label">Мест, шт<input type="text" className="conf-step__input"
-                                                                           placeholder="8" /></label>
+                                                                           placeholder={hall.seats_in_row}
+                                                                           value={seats}
+                                                                           onChange={(e) => setSeats(e.target.value)} /></label>
                     </div>
                     <p className="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
                     <div className="conf-step__legend">
@@ -26,17 +44,8 @@ export default function HallConfiguration({ hall }) {
                     </div>
 
                     <div className="conf-step__hall">
-                        <div className="conf-step__hall-wrapper">
-                            <div className="conf-step__row">
-                                <span className="conf-step__chair conf-step__chair_disabled"></span><span
-                                className="conf-step__chair conf-step__chair_disabled"></span>
-                                <span className="conf-step__chair conf-step__chair_disabled"></span><span
-                                className="conf-step__chair conf-step__chair_standart"></span>
-                                <span className="conf-step__chair conf-step__chair_standart"></span><span
-                                className="conf-step__chair conf-step__chair_disabled"></span>
-                                <span className="conf-step__chair conf-step__chair_disabled"></span><span
-                                className="conf-step__chair conf-step__chair_disabled"></span>
-                            </div>
+                        <div className={`conf-step__hall-wrapper grid-cols-${hall.seats_in_row}`} style={colsNumberStyle}>
+                            {seatsInHall.map(seat => <Seat seat={seat} />)}
                         </div>
                     </div>
 

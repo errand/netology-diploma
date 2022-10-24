@@ -441,6 +441,8 @@ body.admin {
         border-style: solid;
         box-sizing: border-box;
         border-radius: 4px;
+        align-self: center;
+        justify-self: center;
     }
 
     .conf-step__chair_standart {
@@ -546,9 +548,9 @@ body.admin {
                 margin-top: 10px;
             }
 
-            .conf-step__chair + .conf-step__chair{
+            /*.conf-step__chair + .conf-step__chair{
                 margin-left: 10px;
-            }
+            }*/
 
         }
     }

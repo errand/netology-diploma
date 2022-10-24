@@ -36,6 +36,13 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::get('halls/{id}','\App\Http\Controllers\HallController@show')->name('halls.show');
     Route::delete('halls/{id}','\App\Http\Controllers\HallController@destroy')->name('halls.destroy');
 
+    /*
+     * Seats
+     */
+    Route::post('seats', '\App\Http\Controllers\SeatController@store')->name('seats.store');
+    //Route::get('seats/{id}','\App\Http\Controllers\SeatController@show')->name('seats.show');
+    Route::get('seats/{hall_id}','\App\Http\Controllers\SeatController@showSeatsInHall')->name('seats.showSeatsInHall');
+
 });
 
 
