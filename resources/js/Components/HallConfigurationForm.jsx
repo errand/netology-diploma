@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import axios from "axios";
 import Seat from "@/Components/Seat";
 
 export default function HallConfiguration({ hall }) {
@@ -7,6 +8,22 @@ export default function HallConfiguration({ hall }) {
     const [seats, setSeats] = useState(hall.seats_in_row);
     const [seatsInHall, setSeatsInHall] = useState([]);
 
+    const fetchHalls = () => {
+        fetch(route('seats.showSeatsInHall', hall.id))
+            .then(response => response.json())
+            .then(request => setSeatsInHall(request));
+    }
+
+    const handleSeatClick = (evt, seat) => {
+        axios.post(route('seats.toggleVip', seat))
+            .then(function (response) {
+                fetchHalls();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     const colsNumberStyle = {
         gridTemplateColumns:`repeat(${hall.seats_in_row}, 1fr)`,
         display: 'grid',
@@ -14,10 +31,8 @@ export default function HallConfiguration({ hall }) {
     };
 
     useEffect(() => {
-        fetch(route('seats.showSeatsInHall', hall.id))
-            .then(response => response.json())
-            .then(request => setSeatsInHall(request))
-    })
+        fetchHalls();
+    }, [setSeatsInHall])
 
     return (
         <>
@@ -45,7 +60,7 @@ export default function HallConfiguration({ hall }) {
 
                     <div className="conf-step__hall">
                         <div className={`conf-step__hall-wrapper grid-cols-${hall.seats_in_row}`} style={colsNumberStyle}>
-                            {seatsInHall.map(seat => <Seat seat={seat} hall={hall.id} key={seat.id} />)}
+                            {seatsInHall.map(seat => <Seat seat={seat} key={seat.id} clickHandle={handleSeatClick} />)}
                         </div>
                     </div>
 

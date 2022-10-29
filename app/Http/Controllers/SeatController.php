@@ -67,14 +67,14 @@ class SeatController extends Controller
     /**
      * Set VIP flag to Seat ID.
      *
-     * @param  int  $id
+     * @param  int  $seat_id
      * @return \Illuminate\Http\Response
      */
-    public function setVip($id, $hall_id)
+    public function toggleVip($seat_id)
     {
-        $seat = Seat::find($id);
-        $seat->update(['vip' => true]);
-        return Seat::where('hall_id', $hall_id)->get();
+        $seat = Seat::find($seat_id);
+        $seat->update(['vip' => !($seat->vip)]);
+        return Seat::find($seat_id);
 
     }
 

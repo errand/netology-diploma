@@ -15,6 +15,7 @@ class Seat extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'number',
         'row',
         'column',
@@ -24,7 +25,7 @@ class Seat extends Model
     /**
      * Get the Hall for the Seat.
      */
-    public function hall()
+    public function hall(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Hall::class);
     }
