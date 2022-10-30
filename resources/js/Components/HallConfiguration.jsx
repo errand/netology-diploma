@@ -1,16 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import Accordion from "@/Components/Accordion";
 import HallConfigurationForm from "@/Components/HallConfigurationForm";
 
-export default function HallConfiguration({ halls }) {
-
-    const [activeHall, setActiveHall] = useState('');
-
-    const handleSelectHallClick = (id) => {
-        fetch(route('halls.show', id))
-            .then(response => response.json())
-            .then(request => setActiveHall(request));
-    }
+export default function HallConfiguration({ halls, activeHall, onClick }) {
 
     return (
         <Accordion>
@@ -23,11 +15,12 @@ export default function HallConfiguration({ halls }) {
                     {
                         halls.data && halls.data.map(hall =>
                             <li key={hall.id}>
-                                <input type="radio"
+                                <input id={hall.id} type="radio"
                                        className="conf-step__radio"
                                        name="chairs-hall"
                                        value={hall.name}
-                                       onClick={()=>handleSelectHallClick(hall.id)}
+                                       onChange={()=>onClick(hall.id)}
+                                       checked={activeHall.id === hall.id}
                                 />
                                 <span className="conf-step__selector">{hall.name}</span>
                             </li>)

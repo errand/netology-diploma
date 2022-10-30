@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/inertia-react';
@@ -6,6 +6,7 @@ import ToggleBodyClass from '../Components/ToggleBodyClass'
 import Accordion from '@/Components/Accordion';
 import Modal from '@/Components/Modal';
 import HallConfiguration from "@/Components/HallConfiguration";
+import PriceConfiguration from "@/Components/PriceConfiguration";
 
 export default function Manager(props) {
     const { halls, errors } = usePage().props;
@@ -21,6 +22,12 @@ export default function Manager(props) {
     });
     const [sending, setSending] = useState(false);
     const [hallNumber, setHallNumber] = useState('');
+    const [activeHall, setActiveHall] = useState('');
+    const [activeId, setActiveId] = useState(0)
+
+    const handleSelectHallClick = (id) => {
+        setActiveId(id);
+    }
 
     const handleAddHallClick = () => setShowHallModal((previousState) => !previousState);
     const handleDeleteHallClick = (id) => {
@@ -38,6 +45,16 @@ export default function Manager(props) {
             [key]: value
         }));
     }
+
+    useEffect(() => {
+        console.log(activeId);
+        if(activeId) {
+            fetch(route('halls.show', activeId))
+                .then(response => response.json())
+                .then(request => setActiveHall(request));
+        }
+
+    }, [activeId])
 
     const handleHallSubmit = evt => {
         evt.preventDefault();
@@ -101,7 +118,10 @@ export default function Manager(props) {
                     </Accordion.Content>
                 </Accordion>
                 {halls.data.length > 0 &&
-                    <HallConfiguration halls={halls}></HallConfiguration>
+                    <>
+                        <HallConfiguration halls={halls} activeHall={activeHall} onClick={handleSelectHallClick}/>
+                        {/*{activeHall && <PriceConfiguration halls={halls} activeHall={activeHall} />}*/}
+                    </>
                 }
             </main>
             <Modal open={showHallModal} handleClose={hideHallModal}>

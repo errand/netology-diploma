@@ -70,7 +70,7 @@ class HallController extends Controller
      */
     public function show($id)
     {
-        return Hall::find($id)->first();
+        return Hall::find($id);
     }
 
     /**
@@ -102,15 +102,15 @@ class HallController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int $hall
-     * @param  \Illuminate\Http\Request $request
+     * @param  int $rows
      * @param  int $seats
      * @return \Illuminate\Http\Response
      */
     public function updateHallRows(Request $request, $hall)
     {
-        $hall = Hall::find($hall);
-        $hall->update(['rows' => $request->rows, 'seats_in_row' => $request->seats_in_row]);
-        return $request->all();
+        //$hall = Hall::find($hall_id);
+        //$hall->update(['rows' => $rows, 'seats_in_row' => $seats]);
+        return $request;
     }
 
     /**

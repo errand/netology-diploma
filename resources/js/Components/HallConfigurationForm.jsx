@@ -7,9 +7,10 @@ export default function HallConfiguration({ hall }) {
     const [rows, setRows] = useState(hall.rows);
     const [seats, setSeats] = useState(hall.seats_in_row);
     const [seatsInHall, setSeatsInHall] = useState([]);
+    const [currentHall, setCurrentHall] = useState(hall)
 
     const fetchHalls = () => {
-        fetch(route('seats.showSeatsInHall', hall.id))
+        fetch(route('seats.showSeatsInHall', currentHall.id))
             .then(response => response.json())
             .then(request => setSeatsInHall(request));
     }
@@ -49,6 +50,7 @@ export default function HallConfiguration({ hall }) {
 
     useEffect(() => {
         fetchHalls();
+        console.log(seatsInHall)
     }, [setSeatsInHall])
 
     return (
