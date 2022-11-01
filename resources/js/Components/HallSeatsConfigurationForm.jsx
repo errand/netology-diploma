@@ -9,8 +9,8 @@ export default function HallConfiguration({ hall }) {
     const [seatsInHall, setSeatsInHall] = useState([]);
     const [currentHall, setCurrentHall] = useState(hall)
 
-    const fetchHalls = () => {
-        fetch(route('seats.showSeatsInHall', currentHall.id))
+    const fetchHalls = (id) => {
+        fetch(route('seats.showSeatsInHall', id))
             .then(response => response.json())
             .then(request => {
                 setSeatsInHall(request)
@@ -52,7 +52,7 @@ export default function HallConfiguration({ hall }) {
     };
 
     useEffect(() => {
-        fetchHalls();
+        fetchHalls(hall.id);
     }, [hall.id])
 
     return (
