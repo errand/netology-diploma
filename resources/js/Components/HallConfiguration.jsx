@@ -1,8 +1,24 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Accordion from "@/Components/Accordion";
-import HallConfigurationForm from "@/Components/HallConfigurationForm";
+import HallSeatsConfigurationForm from "@/Components/HallSeatsConfigurationForm";
+import PriceConfiguration from "@/Components/PriceConfiguration";
 
-export default function HallConfiguration({ halls, activeHall, onClick }) {
+export default function HallConfiguration({ halls }) {
+    const [activeHall, setActiveHall] = useState('');
+    const [activeId, setActiveId] = useState(0)
+
+    const handleSelectHallClick = (id) => {
+        setActiveId(id);
+    }
+
+    useEffect(() => {
+        if(activeId) {
+            fetch(route('halls.show', activeId))
+                .then(response => response.json())
+                .then(request => setActiveHall(request));
+        }
+
+    }, [activeId])
 
     return (
         <Accordion>
@@ -19,14 +35,16 @@ export default function HallConfiguration({ halls, activeHall, onClick }) {
                                        className="conf-step__radio"
                                        name="chairs-hall"
                                        value={hall.name}
-                                       onChange={()=>onClick(hall.id)}
+                                       onChange={()=>handleSelectHallClick(hall.id)}
                                        checked={activeHall.id === hall.id}
                                 />
                                 <span className="conf-step__selector">{hall.name}</span>
                             </li>)
                     }
+
                 </ul>
-                {activeHall && <HallConfigurationForm hall={activeHall} />}
+
+                {activeHall && <HallSeatsConfigurationForm hall={activeHall} />}
 
             </Accordion.Content>
         </Accordion>

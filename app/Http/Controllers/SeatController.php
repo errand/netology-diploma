@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Seat;
 use App\Http\Requests\StoreSeatRequest;
 use App\Http\Requests\UpdateSeatRequest;
+use Illuminate\Http\Response;
 
 class SeatController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -21,7 +22,7 @@ class SeatController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -32,7 +33,7 @@ class SeatController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreSeatRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreSeatRequest $request)
     {
@@ -43,7 +44,7 @@ class SeatController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -56,7 +57,7 @@ class SeatController extends Controller
      *
      * @param  int  $hall_id
      * @param  int  $number
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function showSeatsInHall($hall_id)
     {
@@ -68,12 +69,20 @@ class SeatController extends Controller
      * Set VIP flag to Seat ID.
      *
      * @param  int  $seat_id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function toggleVip($seat_id)
+    public function toggleSeat($seat_id)
     {
         $seat = Seat::find($seat_id);
-        $seat->update(['vip' => !($seat->vip)]);
+
+        if($seat->vip && !$seat->sold) {
+            $seat->update(['sold' => true, 'vip' => false]);
+        } else if(!$seat->vip && !$seat->sold) {
+            $seat->update(['vip' => true, 'sold' => false]);
+        } else if ($seat->sold && !$seat->vip) {
+            $seat->update(['vip' => false, 'sold' => false]);
+        }
+
         return Seat::find($seat_id);
 
     }
@@ -82,7 +91,7 @@ class SeatController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Seat $seat)
     {
@@ -94,18 +103,18 @@ class SeatController extends Controller
      *
      * @param  \App\Http\Requests\UpdateSeatRequest  $request
      * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateSeatRequest $request, Seat $seat)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Seat  $seat
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Seat $seat)
     {

@@ -22,12 +22,6 @@ export default function Manager(props) {
     });
     const [sending, setSending] = useState(false);
     const [hallNumber, setHallNumber] = useState('');
-    const [activeHall, setActiveHall] = useState('');
-    const [activeId, setActiveId] = useState(0)
-
-    const handleSelectHallClick = (id) => {
-        setActiveId(id);
-    }
 
     const handleAddHallClick = () => setShowHallModal((previousState) => !previousState);
     const handleDeleteHallClick = (id) => {
@@ -46,15 +40,6 @@ export default function Manager(props) {
         }));
     }
 
-    useEffect(() => {
-        console.log(activeId);
-        if(activeId) {
-            fetch(route('halls.show', activeId))
-                .then(response => response.json())
-                .then(request => setActiveHall(request));
-        }
-
-    }, [activeId])
 
     const handleHallSubmit = evt => {
         evt.preventDefault();
@@ -119,7 +104,7 @@ export default function Manager(props) {
                 </Accordion>
                 {halls.data.length > 0 &&
                     <>
-                        <HallConfiguration halls={halls} activeHall={activeHall} onClick={handleSelectHallClick}/>
+                        <HallConfiguration halls={halls} />
                         {/*{activeHall && <PriceConfiguration halls={halls} activeHall={activeHall} />}*/}
                     </>
                 }

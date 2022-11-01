@@ -10,6 +10,6 @@ export default function Seat({seat, hall, clickHandle}) {
         }
     };
     return (
-        <span className={seatClass()} onClick={(evt) => clickHandle(evt, seat.id, hall)}></span>
+        <span id={seat.id} className={seatClass()} onClick={(evt) => clickHandle(evt, seat.id, hall)}></span>
     );
 }

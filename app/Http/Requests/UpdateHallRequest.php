@@ -24,11 +24,11 @@ class UpdateHallRequest extends FormRequest
     public function rules()
     {
         return [
-            'rows' => ['integer', 'required', 'max:100'],
-            'seats_in_row' => ['integer', 'required', 'max:100'],
-            'name' => ['string', 'required', 'max:100'],
-            'vip_price' => ['numeric', 'required'],
-            'common_price' => ['numeric', 'required'],
+            'rows' => ['integer', 'max:100'],
+            'seats_in_row' => ['integer', 'max:100'],
+            'name' => ['string', 'max:100'],
+            'vip_price' => ['numeric'],
+            'common_price' => ['numeric'],
             'open_sale' => [],
         ];
     }

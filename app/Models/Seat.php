@@ -20,6 +20,7 @@ class Seat extends Model
         'row',
         'column',
         'vip',
+        'sold',
     ];
 
     /**

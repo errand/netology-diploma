@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreHallRequest;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Models\Hall;
 use App\Models\Seat;
@@ -101,15 +102,31 @@ class HallController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $hall
+     * @param  int $id
      * @param  int $rows
      * @param  int $seats
      * @return \Illuminate\Http\Response
      */
-    public function updateHallRows(Request $request, $hall)
+    public function updateHallRows(Request $request, $id)
     {
-        //$hall = Hall::find($hall_id);
-        //$hall->update(['rows' => $rows, 'seats_in_row' => $seats]);
+        $hall = Hall::find($id);
+
+        if($request->rows || $request->seats_in_row) {
+            $hall->seats()->delete();
+        }
+
+        $seatsNumber = $request->rows * $request->seats_in_row;
+
+        for ($i = 1; $i < $seatsNumber + 1; $i++) {
+
+            $seat = new Seat(['number' => $i]);
+
+            $hall->seats()->save($seat);
+
+        }
+
+        $hall->update(['rows' => $request->rows, 'seats_in_row' => $request->seats_in_row]);
+        $hall->save();
         return $request;
     }
 

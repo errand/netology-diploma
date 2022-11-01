@@ -41,7 +41,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
      * Seats
      */
     Route::post('seats', '\App\Http\Controllers\SeatController@store')->name('seats.store');
-    Route::post('seats/{id}/vip', '\App\Http\Controllers\SeatController@toggleVip')->name('seats.toggleVip');
+    Route::post('seats/{id}/vip', '\App\Http\Controllers\SeatController@toggleSeat')->name('seats.toggleSeat');
     Route::get('seats/{id}','\App\Http\Controllers\SeatController@show')->name('seats.show');
     Route::get('seats/hall/{hall_id}','\App\Http\Controllers\SeatController@showSeatsInHall')->name('seats.showSeatsInHall');
 
