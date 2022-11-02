@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use Illuminate\Database\Eloquent\Model;
 
 class MovieController extends Controller
 {
@@ -36,7 +37,10 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        //
+        $movie = new Movie($request->validated());
+        $movie->save();
+
+        return $request;
     }
 
     /**

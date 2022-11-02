@@ -1,53 +1,72 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
-export default function PriceConfiguration({halls, activeHall}) {
+export default function PriceConfiguration({activeHall}) {
 
-    const [activeHallId, setActiveHallId] = useState(activeHall.id);
+    const [price, setPrice] = useState(activeHall.common_price);
+    const [vipPrice, setVipPrice] = useState(activeHall.vip_price);
+    const [sending, setSending] = useState(false)
 
-    const handleOnchange = (id) => {
-
+    const handleFormSave = () => {
+        setSending(true)
+        const hall = {
+            id: activeHall.id,
+            vipPrice,
+            price,
+        };
+        axios.post(route('halls.updateHallPrice', hall))
+            .then(function (response) {
+                setSending(false);
+                setPrice(response.price);
+                setVipPrice(response.vipPrice);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
+    useEffect(() => {
+        setPrice(activeHall.common_price);
+        setVipPrice(activeHall.vip_price);
+    }, [activeHall.id])
+
     return (
-        <section className="conf-step">
-            <header className="conf-step__header conf-step__header_opened">
-                <h2 className="conf-step__title">Конфигурация цен</h2>
-            </header>
-            <div className="conf-step__wrapper">
-                <p className="conf-step__paragraph">Выберите зал для конфигурации:</p>
-                <ul className="conf-step__selectors-box">
-                    {
-                        halls.data && halls.data.map(hall =>
-                            <li key={hall.id}>
-                                <input type="radio"
-                                       className="conf-step__radio"
-                                       name="chairs-hall"
-                                       value={hall.name}
-                                       onChange={()=>handleOnchange(hall.id)}
-                                       checked={activeHall.id === hall.id}
-                                />
-                                <span className="conf-step__selector">{hall.name}</span>
-                            </li>)
-                    }
-                </ul>
-
-                <p className="conf-step__paragraph">Установите цены для типов кресел:</p>
-                <div className="conf-step__legend">
-                    <label className="conf-step__label">Цена, рублей<input type="text" className="conf-step__input"
-                                                                           placeholder="0" /></label>
-                    за <span className="conf-step__chair conf-step__chair_standart"></span> обычные кресла
-                </div>
-                <div className="conf-step__legend">
-                    <label className="conf-step__label">Цена, рублей<input type="text" className="conf-step__input"
-                                                                           placeholder="0" value="350" /></label>
-                    за <span className="conf-step__chair conf-step__chair_vip"></span> VIP кресла
-                </div>
-
-                <fieldset className="conf-step__buttons text-center">
-                    <button className="conf-step__button conf-step__button-regular">Отмена</button>
-                    <input type="submit" value="Сохранить" className="conf-step__button conf-step__button-accent" />
-                </fieldset>
+        <form onSubmit={handleFormSave}>
+            <p className="conf-step__paragraph">Установите цены для типов кресел:</p>
+            <div className="conf-step__legend">
+                <label className="conf-step__label">Цена, рублей
+                    <input
+                        type="text"
+                        className="conf-step__input"
+                        placeholder="0"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                    />
+                </label>
+                за <span className="conf-step__chair conf-step__chair_standart"></span> обычные кресла
             </div>
-        </section>
+            <div className="conf-step__legend">
+                <label className="conf-step__label">Цена, рублей
+                    <input
+                        type="text"
+                        className="conf-step__input"
+                        placeholder="0"
+                        value={vipPrice}
+                        onChange={(e) => setVipPrice(e.target.value)}
+                    />
+                </label>
+                за <span className="conf-step__chair conf-step__chair_vip"></span> VIP кресла
+            </div>
+
+            <fieldset className="conf-step__buttons text-center">
+                <button type="reset" className="conf-step__button conf-step__button-regular">Отмена</button>
+                <button
+                    onClick={handleFormSave}
+                    type="button"
+                    className="conf-step__button conf-step__button-accent"
+                    disabled={sending}
+                >Сохранить</button>
+            </fieldset>
+        </form>
     );
 }

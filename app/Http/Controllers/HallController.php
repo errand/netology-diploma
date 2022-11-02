@@ -60,7 +60,7 @@ class HallController extends Controller
 
         }
 
-        return redirect()->route('manager')->with('message', 'Post Delete Successfully');
+        return redirect()->route('manager')->with('message', 'Post stored Successfully');
     }
 
     /**
@@ -97,8 +97,6 @@ class HallController extends Controller
 
     }
 
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -107,7 +105,7 @@ class HallController extends Controller
      * @param  int $seats
      * @return \Illuminate\Http\Response
      */
-    public function updateHallRows(Request $request, $id)
+    public function updateHallRows(Request $request, $id): \Illuminate\Http\Response|Request
     {
         $hall = Hall::find($id);
 
@@ -126,6 +124,23 @@ class HallController extends Controller
         }
 
         $hall->update(['rows' => $request->rows, 'seats_in_row' => $request->seats_in_row]);
+        $hall->save();
+        return $request;
+    }
+
+    /**
+     * Update Hall prices
+     *
+     * @param  int $id
+     * @param  int $vipPrice
+     * @param  int $price
+     * @return \Illuminate\Http\Response
+     */
+    public function updateHallPrice(Request $request, $id): \Illuminate\Http\Response|Request
+    {
+        $hall = Hall::find($id);
+
+        $hall->update(['vip_price' => $request->vipPrice, 'common_price' => $request->price]);
         $hall->save();
         return $request;
     }

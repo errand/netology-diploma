@@ -34,6 +34,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
      */
     Route::post('halls', '\App\Http\Controllers\HallController@store')->name('halls.store');
     Route::post('halls/{id}', '\App\Http\Controllers\HallController@updateHallRows')->name('halls.updateHallRows');
+    Route::post('halls/{id}', '\App\Http\Controllers\HallController@updateHallPrice')->name('halls.updateHallPrice');
     Route::get('halls/{id}','\App\Http\Controllers\HallController@show')->name('halls.show');
     Route::delete('halls/{id}','\App\Http\Controllers\HallController@destroy')->name('halls.destroy');
 
@@ -44,6 +45,13 @@ Route::middleware(['verified', 'auth'])->group(function () {
     Route::post('seats/{id}/vip', '\App\Http\Controllers\SeatController@toggleSeat')->name('seats.toggleSeat');
     Route::get('seats/{id}','\App\Http\Controllers\SeatController@show')->name('seats.show');
     Route::get('seats/hall/{hall_id}','\App\Http\Controllers\SeatController@showSeatsInHall')->name('seats.showSeatsInHall');
+
+    /*
+     * Movies
+     */
+
+    Route::post('movies', '\App\Http\Controllers\MovieController@store')->name('movies.store');
+
 
 });
 

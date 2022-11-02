@@ -116,28 +116,33 @@ export default function Manager(props) {
                 <Modal.Content>
                     <form onSubmit={handleHallSubmit}>
                         <div className="form-group">
-                            <label>Название зала</label>
-                            <input name="name" onChange={handleHallModalFormChange} />
+                            <label className="conf-step__label conf-step__label-fullsize">Название зала
+                            <input className="conf-step__input" name="name" onChange={handleHallModalFormChange} />
+                            </label>
                             {errors.name && <div className="error">{errors.name}</div> }
                         </div>
                         <div className="form-group">
-                            <label>Количество рядов</label>
-                            <input name="rows" onChange={handleHallModalFormChange} />
+                            <label className="conf-step__label conf-step__label-fullsize">Количество рядов
+                            <input className="conf-step__input" name="rows" onChange={handleHallModalFormChange} />
+                            </label>
                             {errors.rows && <div className="error">{errors.rows}</div> }
                         </div>
                         <div className="form-group">
-                            <label>Количество сидений в ряду</label>
-                            <input name="seats_in_row" onChange={handleHallModalFormChange} />
+                            <label className="conf-step__label conf-step__label-fullsize">Количество сидений в ряду
+                            <input className="conf-step__input" name="seats_in_row" onChange={handleHallModalFormChange} />
+                            </label>
                             {errors.seats_in_row && <div className="error">{errors.seats_in_row}</div> }
                         </div>
                         <div className="form-group">
-                            <label>Цена VIP мест</label>
-                            <input name="vip_price" onChange={handleHallModalFormChange} />
+                            <label className="conf-step__label conf-step__label-fullsize">Цена VIP мест
+                            <input className="conf-step__input" name="vip_price" onChange={handleHallModalFormChange} />
+                            </label>
                             {errors.vip_price && <div className="error">{errors.vip_price}</div> }
                         </div>
                         <div className="form-group">
-                            <label>Цена простых мест</label>
-                            <input name="common_price" onChange={handleHallModalFormChange} />
+                            <label className="conf-step__label conf-step__label-fullsize">Цена простых мест
+                            <input className="conf-step__input" name="common_price" onChange={handleHallModalFormChange} />
+                            </label>
                             {errors.common_price && <div className="error">{errors.common_price}</div> }
                         </div>
                         {sending && !errors && <div>spinner</div> }
