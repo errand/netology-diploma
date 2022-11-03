@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('movies', function (Blueprint $table) {
-            $table->binary('poster');
+            $table->string('poster');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('poster');
     }
 };
