@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useForm} from "@inertiajs/inertia-react";
 import axios from "axios";
 import Modal from "@/Components/Modal";
 
@@ -6,69 +7,49 @@ export default function ShowtimeConfiguration() {
 
     const [showAddMovieModal, setShowAddMovieModal] = useState(false);
     const [sending, setSending] = useState(false);
-    const [name, setName] = useState('');
     const [poster, setPoster] = useState('');
-    const [description, setDescription] = useState('');
-    const [duration, setDuration] = useState('');
-    const [country, setCountry] = useState('');
+    const [movies, setMovies] = useState(null)
+
+    const { data, setData, post } = useForm({
+        name: null,
+        poster: null,
+        description: null,
+        duration: null,
+        country: null
+    })
+
+    const fetchMovies = () => {
+        axios.get(route('movies.index'))
+            .then(response => setMovies(response.data))
+    }
 
     const handleAddMovieSubmit = () => {
         setSending(true);
-        const formData = new FormData();
-        formData.append( 'name', name );
-        formData.append( 'poster', poster );
-        formData.append( 'description', description );
-        formData.append( 'duration', duration );
-        formData.append( 'country', country );
-        axios.post(route('movies.store', formData))
-            .then(function (response) {
-                setSending(false);
-                console.log(response)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        post(route('movies.store', data));
+        setShowAddMovieModal(false);
+        fetchMovies();
+        setSending(false);
     }
 
     useEffect(() => {
-        console.log(poster)
-    })
+        fetchMovies();
+    }, [])
 
     return (
         <>
-            <p className="conf-step__paragraph">
+            <p id={'movies'} className="conf-step__paragraph">
                 <button type="button" className="conf-step__button conf-step__button-accent" onClick={() => setShowAddMovieModal(true)}>Добавить фильм</button>
             </p>
             <div className="conf-step__movies">
-                <div className="conf-step__movie">
-                    <img className="conf-step__movie-poster" alt="poster" src="i/poster.png" />
-                    <h3 className="conf-step__movie-title">Звёздные войны XXIII: Атака клонированных клонов</h3>
-                    <p className="conf-step__movie-duration">130 минут</p>
-                </div>
+                {movies && movies.map(movie =>
+                    <div className="conf-step__movie" key={movie.id}>
+                        {console.log(movie)}
+                        <img className="conf-step__movie-poster" alt="poster" src={`/storage/${movie.poster}`}/>
+                        <h3 className="conf-step__movie-title">{movie.name}</h3>
+                        <p className="conf-step__movie-duration">{movie.duration} минут</p>
+                    </div>
+                )}
 
-                <div className="conf-step__movie">
-                    <img className="conf-step__movie-poster" alt="poster" src="i/poster.png"/>
-                    <h3 className="conf-step__movie-title">Миссия выполнима</h3>
-                    <p className="conf-step__movie-duration">120 минут</p>
-                </div>
-
-                <div className="conf-step__movie">
-                    <img className="conf-step__movie-poster" alt="poster" src="i/poster.png"/>
-                    <h3 className="conf-step__movie-title">Серая пантера</h3>
-                    <p className="conf-step__movie-duration">90 минут</p>
-                </div>
-
-                <div className="conf-step__movie">
-                    <img className="conf-step__movie-poster" alt="poster" src="i/poster.png"/>
-                    <h3 className="conf-step__movie-title">Движение вбок</h3>
-                    <p className="conf-step__movie-duration">95 минут</p>
-                </div>
-
-                <div className="conf-step__movie">
-                    <img className="conf-step__movie-poster" alt="poster" src="i/poster.png"/>
-                    <h3 className="conf-step__movie-title">Кот Да Винчи</h3>
-                    <p className="conf-step__movie-duration">100 минут</p>
-                </div>
             </div>
 
             <div className="conf-step__seances">
@@ -120,7 +101,7 @@ export default function ShowtimeConfiguration() {
                         <label className="conf-step__label conf-step__label-fullsize" htmlFor="name">
                             Название фильма
                             <input className="conf-step__input" type="text"
-                                   onChange={(e) => setName(e.target.value)}
+                                   onChange={(e) => setData('name', e.target.value)}
                                    placeholder="Например, &laquo;Гражданин Кейн&raquo;" name="name" required/>
                         </label>
                         <label className="conf-step__label conf-step__label-fullsize" htmlFor="poster">
@@ -133,32 +114,35 @@ export default function ShowtimeConfiguration() {
                             )}
                             Постер
                             <input className="conf-step__input" type="file" accept="image/png, image/jpeg"
-                                   onChange={(e) => setPoster(e.target.files[0])}
+                                   onChange={(e) => {
+                                       setData('poster', e.target.files[0]);
+                                       setPoster(e.target.files[0])
+                                   }}
                                    placeholder="Например, &laquo;Гражданин Кейн&raquo;" name="poster" required/>
                         </label>
                         <label className="conf-step__label conf-step__label-fullsize" htmlFor="description">
                             Описание
                             <textarea className="conf-step__input" type="text"
-                                      onChange={(e) => setDescription(e.target.value)}
-                                   placeholder="Описание" name="description" required>
+                                      onChange={(e) => setData('description', e.target.value)}
+                                      placeholder="Описание" name="description" required>
                             </textarea>
                         </label>
                         <label className="conf-step__label conf-step__label-fullsize" htmlFor="duration">
                             Продолжительность в минутах
                             <input className="conf-step__input" type="number"
-                                   onChange={(e) => setDuration(e.target.value)}
+                                   onChange={(e) => setData('duration', e.target.value)}
                                    placeholder="Например, &laquo;120&raquo;" name="duration" required/>
                         </label>
                         <label className="conf-step__label conf-step__label-fullsize" htmlFor="country">
                             Страна
                             <input className="conf-step__input" type="text"
-                                   onChange={(e) => setCountry(e.target.value)}
+                                   onChange={(e) => setData('country', e.target.value)}
                                    placeholder="Например, &laquo;Индия&raquo;" name="country" required/>
                         </label>
                         <div className="conf-step__buttons text-center">
                             <button type="button"
                                     className="conf-step__button conf-step__button-accent" onClick={handleAddMovieSubmit}>Добавить фильм</button>
-                                <button className="conf-step__button conf-step__button-regular" onClick={()=>setShowAddMovieModal(false)}>Отменить</button>
+                            <button className="conf-step__button conf-step__button-regular" onClick={()=>setShowAddMovieModal(false)}>Отменить</button>
                         </div>
                     </form>
                 </Modal.Content>

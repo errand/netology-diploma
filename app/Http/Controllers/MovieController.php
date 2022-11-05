@@ -16,7 +16,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        return Movie::all();
     }
 
     /**
@@ -37,10 +37,19 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        //$movie = new Movie($request->validated());
-        //$movie->save();
+        if($request->file('poster')){
+            $path = $request->file('poster')->store('posters', 'public');
+        }
+        $movie = new Movie([
+            'name' => $request->name,
+            'poster' => $path,
+            'description' => $request->description,
+            'duration' => $request->duration,
+            'country' => $request->country,
+        ]);
+        $movie->save();
 
-        return $request;
+        return redirect()->route('manager')->withFragment('#movies');
     }
 
     /**

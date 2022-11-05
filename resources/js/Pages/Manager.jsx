@@ -40,7 +40,6 @@ export default function Manager(props) {
         }));
     }
 
-
     const handleHallSubmit = evt => {
         evt.preventDefault();
         setSending(true);

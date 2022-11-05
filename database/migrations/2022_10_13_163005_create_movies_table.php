@@ -18,10 +18,11 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name')->unique();
+            $table->string('poster')->nullable();
             $table->string('description');
             $table->integer('duration');
             $table->string('country');
-            $table->integer('showtime_id');
+            $table->integer('showtime_id')->nullable();
         });
     }
 

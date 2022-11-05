@@ -50,6 +50,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
      * Movies
      */
 
+    Route::get('movies', '\App\Http\Controllers\MovieController@index')->name('movies.index');
     Route::post('movies', '\App\Http\Controllers\MovieController@store')->name('movies.store');
 
 

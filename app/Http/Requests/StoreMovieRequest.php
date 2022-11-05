@@ -25,7 +25,7 @@ class StoreMovieRequest extends FormRequest
     {
         return [
             'name' => ['string', 'required', 'max:100'],
-            'poster' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
+            'poster' => ['image', 'mimes:png,jpg,jpeg', 'max:2048'],
             'description' => ['string', 'required'],
             'duration' => ['integer', 'required'],
             'country' => ['string', 'required']
