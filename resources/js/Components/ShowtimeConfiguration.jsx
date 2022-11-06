@@ -3,12 +3,17 @@ import {useForm} from "@inertiajs/inertia-react";
 import axios from "axios";
 import Modal from "@/Components/Modal";
 
-export default function ShowtimeConfiguration() {
+export default function ShowtimeConfiguration({halls}) {
 
     const [showAddMovieModal, setShowAddMovieModal] = useState(false);
+    const [showShowtimeModal, setShowShowtimeModal] = useState(false);
     const [sending, setSending] = useState(false);
     const [poster, setPoster] = useState('');
-    const [movies, setMovies] = useState(null)
+    const [movies, setMovies] = useState(null);
+    const [showtime, setShowtime] = useState(null);
+    const [activeMovie, setActiveMovie] = useState(null);
+    const [activeHall, setActiveHall] = useState(null);
+    const [time, setTime] = useState('00:00')
 
     const { data, setData, post } = useForm({
         name: null,
@@ -20,7 +25,12 @@ export default function ShowtimeConfiguration() {
 
     const fetchMovies = () => {
         axios.get(route('movies.index'))
-            .then(response => setMovies(response.data))
+            .then((response) => setMovies(response.data))
+    }
+
+    const fetchShowtime = () => {
+        axios.get(route('showtimes.index'))
+            .then((response => setShowtime(response.data)))
     }
 
     const handleAddMovieSubmit = () => {
@@ -31,8 +41,23 @@ export default function ShowtimeConfiguration() {
         setSending(false);
     }
 
+    const handleAddShowtimeSubmit = () => {
+        const data = {
+            hall_id: activeHall,
+            movie_id: activeMovie,
+            time
+        }
+        axios.post(route('showtimes.store'), data)
+            .then(() => {
+                setShowShowtimeModal(false);
+                fetchShowtime();
+            })
+            .catch(error => console.log(error))
+    }
+
     useEffect(() => {
         fetchMovies();
+        fetchShowtime();
     }, [])
 
     return (
@@ -42,8 +67,11 @@ export default function ShowtimeConfiguration() {
             </p>
             <div className="conf-step__movies">
                 {movies && movies.map(movie =>
-                    <div className="conf-step__movie" key={movie.id}>
-                        {console.log(movie)}
+                    <div className="conf-step__movie" key={movie.id} onClick={() => {
+                        setActiveMovie(movie.id);
+                        setShowShowtimeModal(true);
+                    }
+                    }>
                         <img className="conf-step__movie-poster" alt="poster" src={`/storage/${movie.poster}`}/>
                         <h3 className="conf-step__movie-title">{movie.name}</h3>
                         <p className="conf-step__movie-duration">{movie.duration} минут</p>
@@ -53,48 +81,27 @@ export default function ShowtimeConfiguration() {
             </div>
 
             <div className="conf-step__seances">
-                <div className="conf-step__seances-hall">
-                    <h3 className="conf-step__seances-title">Зал 1</h3>
-                    <div className="conf-step__seances-timeline">
-                        <div className="conf-step__seances-movie">
-                            <p className="conf-step__seances-movie-title">Миссия выполнима</p>
-                            <p className="conf-step__seances-movie-start">00:00</p>
-                        </div>
-                        <div className="conf-step__seances-movie">
-                            <p className="conf-step__seances-movie-title">Миссия выполнима</p>
-                            <p className="conf-step__seances-movie-start">12:00</p>
-                        </div>
-                        <div className="conf-step__seances-movie">
-                            <p className="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных
-                                клонов</p>
-                            <p className="conf-step__seances-movie-start">14:00</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="conf-step__seances-hall">
-                    <h3 className="conf-step__seances-title">Зал 2</h3>
-                    <div className="conf-step__seances-timeline">
-                        <div className="conf-step__seances-movie">
-                            <p className="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных
-                                клонов</p>
-                            <p className="conf-step__seances-movie-start">19:50</p>
-                        </div>
-                        <div className="conf-step__seances-movie">
-                            <p className="conf-step__seances-movie-title">Миссия выполнима</p>
-                            <p className="conf-step__seances-movie-start">22:00</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                {halls && halls.data.map(hall =>
+                    <div className="conf-step__seances-hall" key={hall.id}>
+                        <h3 className="conf-step__seances-title">{hall.name}</h3>
+                        <div className="conf-step__seances-timeline">
+                            {showtime && showtime.filter(show => show.hall_id === hall.id).map(movieShow =>
+                                movies && movies.filter(movie => movie.id === movieShow.movie_id).map(item =>
 
-            <fieldset className="conf-step__buttons text-center">
-                <button className="conf-step__button conf-step__button-regular">Отмена</button>
-                <input type="submit" value="Сохранить" className="conf-step__button conf-step__button-accent"/>
-            </fieldset>
+                                    <div className="conf-step__seances-movie" style={{marginLeft: ((parseInt(movieShow.time.split(':')[0]) * 60 + parseInt(movieShow.time.split(':')[1])) / 60) * 30, background: '#85ff89'}} key={movieShow.id}>
+                                        <p className="conf-step__seances-movie-title">{item.name}</p>
+                                        <p className="conf-step__seances-movie-start">{movieShow.time}</p>
+                                    </div>
+                                )
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
 
             <Modal open={showAddMovieModal} handleClose={() => setShowAddMovieModal(false)}>
                 <Modal.Header>
-                    Удалить зал?
+                    Добавить фильм
                 </Modal.Header>
                 <Modal.Content>
                     <form onSubmit={handleAddMovieSubmit}>
@@ -143,6 +150,48 @@ export default function ShowtimeConfiguration() {
                             <button type="button"
                                     className="conf-step__button conf-step__button-accent" onClick={handleAddMovieSubmit}>Добавить фильм</button>
                             <button className="conf-step__button conf-step__button-regular" onClick={()=>setShowAddMovieModal(false)}>Отменить</button>
+                        </div>
+                    </form>
+                </Modal.Content>
+            </Modal>
+            <Modal open={showShowtimeModal} handleClose={() => setShowShowtimeModal(false)}>
+                <Modal.Header>
+                    Добавить сеанс
+                </Modal.Header>
+
+                <Modal.Content>
+                    {movies && movies.filter(movie => movie.id === activeMovie).map(item =>
+                    <div className="conf-step__movie" key={item.id}>
+                        <h6>Фильм</h6>
+                        <img className="conf-step__movie-poster" width={'100px'} alt="poster" src={`/storage/${item.poster}`}/>
+                        <h3 className="conf-step__movie-title">{item.name}</h3>
+                        <p className="conf-step__movie-duration">{item.duration} минут</p>
+                    </div>
+                    )}
+                    <form onSubmit={handleAddShowtimeSubmit}>
+                        <label className="conf-step__label conf-step__label-fullsize" htmlFor="hall">
+                            Название зала
+                            <select className="conf-step__input" name="hall"
+                                    defaultValue={'DEFAULT'}
+                                    required
+                                    onChange={(e) => {
+                                        setActiveHall(e.target.value)}
+                                    }>
+                                <option value="DEFAULT" disabled>Выберите зал</option>
+                                {halls.data && halls.data.map(hall =>
+                                    <option value={hall.id} key={hall.id}>{hall.name}</option>
+                                )}
+                            </select>
+                        </label>
+                        <label className="conf-step__label conf-step__label-fullsize" htmlFor="time">
+                            Время начала
+                            <input className="conf-step__input" type="time" value={time} name="time" required onChange={(e) => setTime(e.target.value)} />
+                        </label>
+
+                        <div className="conf-step__buttons text-center">
+                            <button type="button"
+                                    className="conf-step__button conf-step__button-accent" onClick={handleAddShowtimeSubmit}>Добавить сеанс</button>
+                            <button type={'button'} className="conf-step__button conf-step__button-regular" onClick={()=>setShowShowtimeModal(false)}>Отменить</button>
                         </div>
                     </form>
                 </Modal.Content>

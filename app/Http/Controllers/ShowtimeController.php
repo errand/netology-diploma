@@ -15,7 +15,7 @@ class ShowtimeController extends Controller
      */
     public function index()
     {
-        //
+        return Showtime::all();
     }
 
     /**
@@ -32,11 +32,14 @@ class ShowtimeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreShowtimeRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return StoreShowtimeRequest
      */
     public function store(StoreShowtimeRequest $request)
     {
-        //
+        $showtime = new Showtime($request->validated());
+        $showtime->save();
+
+        return $request;
     }
 
     /**

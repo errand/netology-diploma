@@ -13,7 +13,7 @@ class StoreShowtimeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreShowtimeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'hall_id' => ['integer', 'required'],
+            'movie_id' => ['integer', 'required'],
+            'time' => ['date_format:H:i', 'required'],
         ];
     }
 }

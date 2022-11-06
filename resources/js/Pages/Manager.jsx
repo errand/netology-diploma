@@ -102,10 +102,7 @@ export default function Manager(props) {
                     </Accordion.Content>
                 </Accordion>
                 {halls.data.length > 0 &&
-                    <>
-                        <HallConfiguration halls={halls} />
-                        {/*{activeHall && <PriceConfiguration halls={halls} activeHall={activeHall} />}*/}
-                    </>
+                <HallConfiguration halls={halls} />
                 }
             </main>
             <Modal open={showHallModal} handleClose={hideHallModal}>

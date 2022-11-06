@@ -146,6 +146,21 @@ class HallController extends Controller
     }
 
     /**
+     * Set Active Hall
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function setActive(Request $request, int $id): \Illuminate\Http\Response|Request
+    {
+        $hall = Hall::find($id);
+
+        $hall->update(['open_sale' => true]);
+        $hall->save();
+        return $request;
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

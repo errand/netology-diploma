@@ -6,10 +6,16 @@ import ShowtimeConfiguration from "@/Components/ShowtimeConfiguration";
 
 export default function HallConfiguration({ halls }) {
     const [activeHall, setActiveHall] = useState('');
-    const [activeId, setActiveId] = useState(0)
+    const [activeId, setActiveId] = useState(0);
+    const [activeHallMessage, setActiveHallMessage] = useState('')
 
     const handleSelectHallClick = (id) => {
         setActiveId(id);
+    }
+
+    const handleOpenSalesClick = () => {
+        axios.post(route('halls.setActive', activeId))
+            .then(() => setActiveHallMessage('Зал открыт для посещения'))
     }
 
     useEffect(() => {
@@ -83,10 +89,24 @@ export default function HallConfiguration({ halls }) {
             </Accordion.Trigger>
             <Accordion.Content>
 
-                <ShowtimeConfiguration />
+                <ShowtimeConfiguration halls={halls} />
 
             </Accordion.Content>
         </Accordion>
+            {activeHall &&
+            <Accordion>
+                <Accordion.Trigger>
+                    Открыть продажи
+                </Accordion.Trigger>
+                <Accordion.Content>
+
+                    <p className="conf-step__paragraph">Всё готово, теперь можно:</p>
+                    <button type={'button'} className="conf-step__button conf-step__button-accent" onClick={handleOpenSalesClick}>Открыть продажу билетов</button>
+                    {activeHallMessage && <p><br/>{activeHallMessage}</p>}
+                </Accordion.Content>
+            </Accordion>
+            }
+
     </>
     );
 }

@@ -35,7 +35,7 @@ class Hall extends Model
     /**
      * Get the showtimes for the movie.
      */
-    public function showtimes()
+    public function showtimes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Showtime::class);
     }
