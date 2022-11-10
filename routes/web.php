@@ -15,15 +15,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'extraClass' => 'client',
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/','\App\Http\Controllers\ShowtimeController@index')->name('welcome');
 
 Route::middleware(['verified', 'auth'])->group(function () {
 
@@ -56,7 +48,7 @@ Route::middleware(['verified', 'auth'])->group(function () {
     /*
      * Showtime
      */
-    Route::get('showtimes', '\App\Http\Controllers\ShowtimeController@index')->name('showtimes.index');
+    Route::get('showtimes', '\App\Http\Controllers\ShowtimeController@showtimes')->name('showtimes.showtimes');
     Route::post('showtimes', '\App\Http\Controllers\ShowtimeController@store')->name('showtimes.store');
 
 

@@ -88,7 +88,6 @@ export default function HallConfiguration({ halls }) {
                 Сетка сеансов
             </Accordion.Trigger>
             <Accordion.Content>
-
                 <ShowtimeConfiguration halls={halls} />
 
             </Accordion.Content>

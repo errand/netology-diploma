@@ -29,7 +29,7 @@ export default function ShowtimeConfiguration({halls}) {
     }
 
     const fetchShowtime = () => {
-        axios.get(route('showtimes.index'))
+        axios.get(route('showtimes.showtimes'))
             .then((response => setShowtime(response.data)))
     }
 
