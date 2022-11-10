@@ -37,9 +37,8 @@ class ShowtimeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
      */
-    public function showtimes(): Response
+    public function showtimes()
     {
         return Showtime::all();
     }

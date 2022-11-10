@@ -85,6 +85,7 @@ export default function ShowtimeConfiguration({halls}) {
                     <div className="conf-step__seances-hall" key={hall.id}>
                         <h3 className="conf-step__seances-title">{hall.name}</h3>
                         <div className="conf-step__seances-timeline">
+                            {console.log(showtime)}
                             {showtime && showtime.filter(show => show.hall_id === hall.id).map(movieShow =>
                                 movies && movies.filter(movie => movie.id === movieShow.movie_id).map(item =>
 
