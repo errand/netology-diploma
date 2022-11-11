@@ -70,12 +70,23 @@ class ShowtimeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Showtime  $showtime
-     * @return Response
+     * @param  integer $id
+     * @return \Inertia\Response
      */
-    public function show(Showtime $showtime)
+    public function show(int $id)
     {
-        //
+        $showtime = Showtime::find($id);
+        $hall = $showtime->hall()->get();
+        $movie = $showtime->movie()->get();
+
+        return Inertia::render('ShowtimeSelect', [
+            'extraClass' => 'client',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'showtime' => $showtime,
+            'hall' => $hall,
+            'movie' => $movie,
+        ]);
     }
 
     /**

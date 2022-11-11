@@ -17,6 +17,12 @@ use Inertia\Inertia;
 
 Route::get('/','\App\Http\Controllers\ShowtimeController@index')->name('welcome');
 
+/*
+ * Pick a showtime
+ * */
+
+Route::get('showtime/{id}', '\App\Http\Controllers\ShowtimeController@show')->name('showtime.show');
+
 Route::middleware(['verified', 'auth'])->group(function () {
 
     Route::get('/manager', '\App\Http\Controllers\HallController@index')->name('manager');

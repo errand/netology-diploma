@@ -22,8 +22,15 @@ class Showtime extends Model
     /**
      * Get the Showtime Movie.
      */
-    public function movie(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function movie(): \Illuminate\Database\Eloquent\Relations\belongsTo
     {
-        return $this->hasOne(Movie::class);
+        return $this->belongsTo(Movie::class);
+    }
+    /**
+     * Get the Showtime Hall.
+     */
+    public function hall(): \Illuminate\Database\Eloquent\Relations\belongsTo
+    {
+        return $this->belongsTo(Hall::class);
     }
 }

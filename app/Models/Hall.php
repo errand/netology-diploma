@@ -43,9 +43,17 @@ class Hall extends Model
     /**
      * Get the Seats for the Hall.
      */
-    public function seats()
+    public function seats(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Seat::class);
+    }
+
+    /**
+     * Get the Showtime Hall.
+     */
+    public function showtime(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Showtime::class);
     }
 
     /**
