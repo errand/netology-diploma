@@ -22,17 +22,19 @@ Route::get('/','\App\Http\Controllers\ShowtimeController@index')->name('welcome'
  * */
 
 Route::get('showtime/{id}', '\App\Http\Controllers\ShowtimeController@show')->name('showtime.show');
+Route::get('showtime/{id}/payment', '\App\Http\Controllers\ShowtimeController@payment')->name('showtime.payment');
 
 Route::middleware(['verified', 'auth'])->group(function () {
 
     Route::get('/manager', '\App\Http\Controllers\HallController@index')->name('manager');
 
+
     /*
      * Halls
      */
     Route::post('halls', '\App\Http\Controllers\HallController@store')->name('halls.store');
-    Route::post('halls/{id}', '\App\Http\Controllers\HallController@updateHallRows')->name('halls.updateHallRows');
-    Route::post('halls/{id}', '\App\Http\Controllers\HallController@updateHallPrice')->name('halls.updateHallPrice');
+    Route::post('halls/{id}/rows', '\App\Http\Controllers\HallController@updateHallRows')->name('halls.updateHallRows');
+    Route::post('halls/{id}/price', '\App\Http\Controllers\HallController@updateHallPrice')->name('halls.updateHallPrice');
     Route::post('halls/{id}', '\App\Http\Controllers\HallController@setActive')->name('halls.setActive');
     Route::get('halls/{id}','\App\Http\Controllers\HallController@show')->name('halls.show');
     Route::delete('halls/{id}','\App\Http\Controllers\HallController@destroy')->name('halls.destroy');

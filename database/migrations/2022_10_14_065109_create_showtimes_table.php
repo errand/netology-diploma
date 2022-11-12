@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('showtimes', function (Blueprint $table) {
             $table->id();
             $table->dateTime('time', $precision = 0);
+            $table->foreignId('hall_id');
+            $table->foreignId('movie_id');
             $table->timestamps();
         });
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreHallRequest;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Models\Hall;
 use App\Models\Seat;
@@ -131,12 +130,12 @@ class HallController extends Controller
     /**
      * Update Hall prices
      *
-     * @param  int $id
+     * @param int $id
      * @param  int $vipPrice
      * @param  int $price
      * @return \Illuminate\Http\Response
      */
-    public function updateHallPrice(Request $request, $id): \Illuminate\Http\Response|Request
+    public function updateHallPrice(Request $request, int $id): \Illuminate\Http\Response|Request
     {
         $hall = Hall::find($id);
 

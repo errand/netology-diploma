@@ -85,8 +85,8 @@ export default function ShowtimeConfiguration({halls}) {
                     <div className="conf-step__seances-hall" key={hall.id}>
                         <h3 className="conf-step__seances-title">{hall.name}</h3>
                         <div className="conf-step__seances-timeline">
-                            {showtime && showtime.filter(show => show.hall_id === hall.id).map(movieShow =>
-                                movies && movies.filter(movie => movie.id === movieShow.movie_id).map(item =>
+                            {showtime && showtime.filter(show => show.hall_id == hall.id).map(movieShow =>
+                                movies && movies.filter(movie => movie.id == movieShow.movie_id).map(item =>
 
                                     <div className="conf-step__seances-movie" style={{marginLeft: ((parseInt(movieShow.time.split(':')[0]) * 60 + parseInt(movieShow.time.split(':')[1])) / 60) * 30, background: '#85ff89'}} key={movieShow.id}>
                                         <p className="conf-step__seances-movie-title">{item.name}</p>

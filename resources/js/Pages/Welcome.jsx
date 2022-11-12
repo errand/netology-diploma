@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { Link, Head } from '@inertiajs/inertia-react';
 import ToggleBodyClass from '../Components/ToggleBodyClass'
 
@@ -73,16 +73,15 @@ export default function Welcome(props) {
                                     </p>
                                 </div>
                             </div>
-
                             {props.halls && props.halls.map(hall =>
                                 <div className="movie-seances__hall" key={hall.id}>
                                     <h3 className="movie-seances__hall-title">{hall.name}</h3>
                                     <ul className="movie-seances__list">
                                         {props.showtimes
-                                            .filter(showtime => showtime.hall_id === hall.id && showtime.movie_id === movie.id)
+                                            .filter(showtime => showtime.hall_id == hall.id && showtime.movie_id == movie.id)
                                             .map(showtime =>
                                                 <li key={showtime.id} className="movie-seances__time-block">
-                                                    <a className="movie-seances__time" href="hall.html">{showtime.time}</a></li>
+                                                    <Link href={route('showtime.show', showtime.id)} className="movie-seances__time">{showtime.time}</Link></li>
                                             )}
                                     </ul>
                                 </div>

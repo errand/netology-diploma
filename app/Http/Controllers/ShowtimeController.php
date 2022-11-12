@@ -7,6 +7,7 @@ use App\Models\Movie;
 use App\Models\Showtime;
 use App\Http\Requests\StoreShowtimeRequest;
 use App\Http\Requests\UpdateShowtimeRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
@@ -76,8 +77,9 @@ class ShowtimeController extends Controller
     public function show(int $id)
     {
         $showtime = Showtime::find($id);
-        $hall = $showtime->hall()->get();
-        $movie = $showtime->movie()->get();
+        $hall = $showtime->hall()->first();
+        $seats = $hall->seats;
+        $movie = $showtime->movie()->first();
 
         return Inertia::render('ShowtimeSelect', [
             'extraClass' => 'client',
@@ -86,6 +88,16 @@ class ShowtimeController extends Controller
             'showtime' => $showtime,
             'hall' => $hall,
             'movie' => $movie,
+            'seats' => $seats,
+        ]);
+    }
+
+    public function payment(Request $request) {
+        return Inertia::render('ShowtimePayment', [
+            'extraClass' => 'client',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'data' => $request,
         ]);
     }
 

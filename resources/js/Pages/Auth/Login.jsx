@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import ToggleBodyClass from "@/Components/ToggleBodyClass";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -33,7 +34,14 @@ export default function Login({ status, canResetPassword }) {
     return (
         <GuestLayout>
             <Head title="Log in" />
+            <ToggleBodyClass extraClass='client' />
 
+            <header className="page-header">
+                <h1 className="page-header__title">Идём<span>в</span>кино</h1>
+                <span className="page-header__subtitle">Администраторррская</span>
+            </header>
+
+            <main className="conf-steps">
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
@@ -91,6 +99,7 @@ export default function Login({ status, canResetPassword }) {
                     </PrimaryButton>
                 </div>
             </form>
+            </main>
         </GuestLayout>
     );
 }
