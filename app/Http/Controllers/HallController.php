@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreHallRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\Hall;
 use App\Models\Seat;
-use App\Http\Requests\UpdateHallRequest;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -17,7 +17,7 @@ class HallController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $halls = DB::table('halls')->paginate(10);
 
@@ -28,22 +28,12 @@ class HallController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreHallRequest  $request
+     * @param StoreHallRequest $request
      * @return \Inertia\Response
      */
-    public function store(StoreHallRequest $request)
+    public function store(StoreHallRequest $request): \Inertia\Response
     {
 
         $hall = new Hall($request->validated());
@@ -66,45 +56,21 @@ class HallController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show($id)
+    public function show($id): Response
     {
         return Hall::find($id);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Hall  $hall
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Hall $hall)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateHallRequest  $request
-     * @param  int $hall
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response|Request
      */
-    public function update(UpdateHallRequest $request, int $hall)
-    {
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @param  int $rows
-     * @param  int $seats
-     * @return \Illuminate\Http\Response
-     */
-    public function updateHallRows(Request $request, $id): \Illuminate\Http\Response|Request
+    public function updateHallRows(Request $request, int $id): Response|Request
     {
         $hall = Hall::find($id);
 
@@ -130,12 +96,11 @@ class HallController extends Controller
     /**
      * Update Hall prices
      *
+     * @param Request $request
      * @param int $id
-     * @param  int $vipPrice
-     * @param  int $price
-     * @return \Illuminate\Http\Response
+     * @return Response|Request
      */
-    public function updateHallPrice(Request $request, int $id): \Illuminate\Http\Response|Request
+    public function updateHallPrice(Request $request, int $id): Response|Request
     {
         $hall = Hall::find($id);
 
@@ -147,10 +112,11 @@ class HallController extends Controller
     /**
      * Set Active Hall
      *
+     * @param Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response|Request
      */
-    public function setActive(Request $request, int $id): \Illuminate\Http\Response|Request
+    public function setActive(Request $request, int $id): Response|Request
     {
         $hall = Hall::find($id);
 
@@ -162,10 +128,10 @@ class HallController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
         Hall::destroy($id);
         return redirect()->route('manager');

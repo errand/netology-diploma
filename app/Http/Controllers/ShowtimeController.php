@@ -6,9 +6,7 @@ use App\Models\Hall;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Http\Requests\StoreShowtimeRequest;
-use App\Http\Requests\UpdateShowtimeRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +15,9 @@ class ShowtimeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
 
         $showtimes = Showtime::all();
@@ -35,32 +33,14 @@ class ShowtimeController extends Controller
             'movies' => $movies,
         ]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     */
-    public function showtimes()
-    {
-        return Showtime::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreShowtimeRequest  $request
+     * @param StoreShowtimeRequest $request
      * @return StoreShowtimeRequest
      */
-    public function store(StoreShowtimeRequest $request)
+    public function store(StoreShowtimeRequest $request): StoreShowtimeRequest
     {
         $showtime = new Showtime($request->validated());
         $showtime->save();
@@ -74,7 +54,7 @@ class ShowtimeController extends Controller
      * @param  integer $id
      * @return \Inertia\Response
      */
-    public function show(int $id)
+    public function show(int $id): \Inertia\Response
     {
         $showtime = Showtime::find($id);
         $hall = $showtime->hall()->first();
@@ -92,7 +72,8 @@ class ShowtimeController extends Controller
         ]);
     }
 
-    public function payment(Request $request) {
+    public function payment(Request $request): \Inertia\Response
+    {
         return Inertia::render('ShowtimePayment', [
             'extraClass' => 'client',
             'canLogin' => Route::has('login'),
@@ -101,37 +82,4 @@ class ShowtimeController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Showtime  $showtime
-     * @return Response
-     */
-    public function edit(Showtime $showtime)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateShowtimeRequest  $request
-     * @param  \App\Models\Showtime  $showtime
-     * @return Response
-     */
-    public function update(UpdateShowtimeRequest $request, Showtime $showtime)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Showtime  $showtime
-     * @return Response
-     */
-    public function destroy(Showtime $showtime)
-    {
-        //
-    }
 }
