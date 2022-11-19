@@ -101,7 +101,7 @@ export default function Manager(props) {
                         <button className="conf-step__button conf-step__button-accent" onClick={handleAddHallClick}>Создать зал</button>
                     </Accordion.Content>
                 </Accordion>
-                {halls.data.length > 0 &&
+                {halls &&
                 <HallConfiguration halls={halls} />
                 }
             </main>

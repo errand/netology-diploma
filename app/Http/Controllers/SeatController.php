@@ -24,9 +24,9 @@ class SeatController extends Controller
      * Display the specified resource.
      *
      * @param int $hall_id
-     * @return Response
+     * @return mixed
      */
-    public function showSeatsInHall(int $hall_id): Response
+    public function showSeatsInHall(int $hall_id)
     {
         return Seat::where('hall_id', $hall_id)->get();
 
@@ -36,9 +36,9 @@ class SeatController extends Controller
      * Set VIP flag to Seat ID.
      *
      * @param int $seat_id
-     * @return Response
+     * @return mixed
      */
-    public function toggleSeat(int $seat_id): Response
+    public function toggleSeat(int $seat_id): mixed
     {
         $seat = Seat::find($seat_id);
 

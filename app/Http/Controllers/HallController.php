@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\HallRepositoryInterface;
 use App\Http\Requests\StoreHallRequest;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Hall;
@@ -12,6 +14,12 @@ use Inertia\Inertia;
 
 class HallController extends Controller
 {
+    private HallRepositoryInterface $hallRepository;
+
+    public function __construct(HallRepositoryInterface $hallRepository)
+    {
+        $this->hallRepository = $hallRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +27,7 @@ class HallController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $halls = DB::table('halls')->paginate(10);
+        $halls = $this->hallRepository->getAllHalls();
 
         return Inertia::render('Manager', [
             'extraClass' => 'admin',
@@ -31,9 +39,9 @@ class HallController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreHallRequest $request
-     * @return \Inertia\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreHallRequest $request): \Inertia\Response
+    public function store(StoreHallRequest $request): \Illuminate\Http\RedirectResponse
     {
 
         $hall = new Hall($request->validated());
@@ -55,74 +63,12 @@ class HallController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param int $id
+     * @return mixed
      */
-    public function show($id): Response
+    public function show(int $id)
     {
         return Hall::find($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response|Request
-     */
-    public function updateHallRows(Request $request, int $id): Response|Request
-    {
-        $hall = Hall::find($id);
-
-        if($request->rows || $request->seats_in_row) {
-            $hall->seats()->delete();
-        }
-
-        $seatsNumber = $request->rows * $request->seats_in_row;
-
-        for ($i = 1; $i < $seatsNumber + 1; $i++) {
-
-            $seat = new Seat(['number' => $i]);
-
-            $hall->seats()->save($seat);
-
-        }
-
-        $hall->update(['rows' => $request->rows, 'seats_in_row' => $request->seats_in_row]);
-        $hall->save();
-        return $request;
-    }
-
-    /**
-     * Update Hall prices
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response|Request
-     */
-    public function updateHallPrice(Request $request, int $id): Response|Request
-    {
-        $hall = Hall::find($id);
-
-        $hall->update(['vip_price' => $request->vipPrice, 'common_price' => $request->price]);
-        $hall->save();
-        return $request;
-    }
-
-    /**
-     * Set Active Hall
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response|Request
-     */
-    public function setActive(Request $request, int $id): Response|Request
-    {
-        $hall = Hall::find($id);
-
-        $hall->update(['open_sale' => true]);
-        $hall->save();
-        return $request;
     }
 
     /**

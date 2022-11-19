@@ -9,15 +9,16 @@ use App\Http\Requests\StoreShowtimeRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use Inertia\Response;
 
 class ShowtimeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Inertia\Response
+     * @return Response
      */
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
 
         $showtimes = Showtime::all();
@@ -32,6 +33,15 @@ class ShowtimeController extends Controller
             'halls' => $halls,
             'movies' => $movies,
         ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     */
+    public function showtimes()
+    {
+        return Showtime::all();
     }
 
     /**
@@ -52,9 +62,8 @@ class ShowtimeController extends Controller
      * Display the specified resource.
      *
      * @param  integer $id
-     * @return \Inertia\Response
      */
-    public function show(int $id): \Inertia\Response
+    public function show(int $id)
     {
         $showtime = Showtime::find($id);
         $hall = $showtime->hall()->first();
@@ -72,7 +81,7 @@ class ShowtimeController extends Controller
         ]);
     }
 
-    public function payment(Request $request): \Inertia\Response
+    public function payment(Request $request): Response
     {
         return Inertia::render('ShowtimePayment', [
             'extraClass' => 'client',
