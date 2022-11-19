@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import ToggleBodyClass from "@/Components/ToggleBodyClass";
 import {Head, Link} from "@inertiajs/inertia-react";
 import {Inertia} from "@inertiajs/inertia";
@@ -16,7 +16,7 @@ export default function ShowtimeSelect(props){
     };
 
     const handleSeatClick = (seat, vip) => {
-        const seatPrice = vip ? props.hall.vip_price : props.hall.common_price;
+        const seatPrice = vip == 1 ? parseInt(props.hall.vip_price) : parseInt(props.hall.common_price);
         if(selected.includes(seat)) {
             let newSeats = selected.filter(item => item !== seat);
             setSelected(newSeats)
@@ -28,7 +28,6 @@ export default function ShowtimeSelect(props){
         }
     };
 
-
     const handlePaymentClick = () => {
         const showtimeValues = {
             seats: selected,
@@ -39,7 +38,6 @@ export default function ShowtimeSelect(props){
         }
         Inertia.get(route('showtime.payment', props.showtime.id), showtimeValues, {
             onSuccess: () => {
-                setSending(false);
                 evt.target.reset();
                 setShowHallModal(false);
             }
@@ -99,8 +97,8 @@ export default function ShowtimeSelect(props){
                                 <div className="buying-scheme__row" style={colsNumberStyle}>
                                     {props.seats.map(seat =>
                                         <span key={seat.id}
-                                              className={`buying-scheme__chair buying-scheme__chair_${seat.sold ? 'taken' : (seat.vip ? 'vip' : 'standart')} ${isSelected(seat.id)}`}
-                                              onClick={!seat.sold ? () => handleSeatClick(seat.id, seat.vip) : undefined}
+                                              className={`buying-scheme__chair buying-scheme__chair_${seat.sold == 1 ? 'taken' : (seat.vip == 1 ? 'vip' : 'standart')} ${isSelected(seat.id)}`}
+                                              onClick={seat.sold == 0 ? () => handleSeatClick(seat.id, seat.vip) : undefined}
                                         ></span>
                                     )}
                                 </div>

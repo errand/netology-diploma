@@ -89,7 +89,8 @@ export default function HallConfiguration({ hall }) {
                 </div>
 
                 <div className="conf-step__hall">
-                    <div className={`conf-step__hall-wrapper grid-cols-${hall.seats_in_row} grid-rows-${hall.rows}`} style={colsNumberStyle}>
+                    <div className={`conf-step__hall-wrapper grid-cols-${hall.seats_in_row} grid-rows-${hall.rows}`}
+                         style={colsNumberStyle}>
                         {seatsInHall.map(seat => <Seat seat={seat} key={seat.id} clickHandle={handleSeatClick} />)}
                     </div>
                 </div>

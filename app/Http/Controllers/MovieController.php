@@ -3,20 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Interfaces\MovieRepositoryInterface;
 use App\Http\Requests\StoreMovieRequest;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 
 class MovieController extends Controller
 {
+    private MovieRepositoryInterface $movieRepository;
+
+    public function __construct(MovieRepositoryInterface $movieRepository)
+    {
+        $this->movieRepository = $movieRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
-    public function index()
+    public function index(): Collection
     {
-        return Movie::all();
+        $this->movieRepository->all();
     }
+
 
     /**
      * Store a newly created resource in storage.

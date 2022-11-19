@@ -2,9 +2,9 @@
 
 namespace App\Interfaces;
 
-interface HallRepositoryInterface
+interface MovieRepositoryInterface
 {
     public function all();
-    public function findById(int $id);
+    public function findById( int $id);
     public function destroy(int $id);
 }

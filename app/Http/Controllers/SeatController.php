@@ -26,7 +26,7 @@ class SeatController extends Controller
      * @param int $hall_id
      * @return mixed
      */
-    public function showSeatsInHall(int $hall_id)
+    public function showSeatsInHall(int $hall_id): mixed
     {
         return Seat::where('hall_id', $hall_id)->get();
 

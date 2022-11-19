@@ -35,10 +35,6 @@ class ShowtimeController extends Controller
         ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     */
     public function showtimes()
     {
         return Showtime::all();

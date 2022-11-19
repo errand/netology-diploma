@@ -53,7 +53,8 @@ export default function ShowtimePayment(props){
                             {!ready &&
                                 <>
                             <p className="ticket__info">Стоимость: <span
-                                className="ticket__details ticket__cost">{props.data.price}</span> рублей</p>
+                                className="ticket__details ticket__cost">
+                                {props.data.price}</span> рублей</p>
 
 
                             <button className="acceptin-button" onClick={() => setReady(true)}>Получить код

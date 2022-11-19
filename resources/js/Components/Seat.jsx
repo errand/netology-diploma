@@ -1,9 +1,9 @@
 export default function Seat({seat, hall, clickHandle}) {
 
     const seatClass = () => {
-        if(seat.vip) {
+        if(seat.vip == 1) {
             return 'conf-step__chair conf-step__chair_vip'
-        } else if (seat.sold) {
+        } else if (seat.sold == 1) {
             return 'conf-step__chair conf-step__chair_disabled'
         } else {
             return 'conf-step__chair conf-step__chair_standart'
