@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Hall extends Model
 {
@@ -26,7 +29,7 @@ class Hall extends Model
     /**
      * Get the movies for the hall.
      */
-    public function movies()
+    public function movies(): HasManyThrough
     {
         return $this->hasManyThrough(Movie::class, Showtime::class);
     }
@@ -35,7 +38,7 @@ class Hall extends Model
     /**
      * Get the showtimes for the movie.
      */
-    public function showtimes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function showtimes(): HasMany
     {
         return $this->hasMany(Showtime::class);
     }
@@ -43,7 +46,7 @@ class Hall extends Model
     /**
      * Get the Seats for the Hall.
      */
-    public function seats(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function seats(): HasMany
     {
         return $this->hasMany(Seat::class);
     }
@@ -51,7 +54,7 @@ class Hall extends Model
     /**
      * Get the Showtime Hall.
      */
-    public function showtime(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function showtime(): HasOne
     {
         return $this->hasOne(Showtime::class);
     }
@@ -59,7 +62,7 @@ class Hall extends Model
     /**
      * Delete Seats in the Hall on Hall delete
      */
-    public function delete()
+    public function delete(): ?bool
     {
         $this->seats()->delete();
         return parent::delete();

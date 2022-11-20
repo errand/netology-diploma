@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +25,6 @@ Route::get('showtime/{id}/payment', '\App\Http\Controllers\ShowtimeController@pa
 Route::middleware(['verified', 'auth'])->group(function () {
 
     Route::get('/manager', '\App\Http\Controllers\HallController@index')->name('manager');
-
-
     /*
      * Halls
      */
