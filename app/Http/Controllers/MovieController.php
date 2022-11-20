@@ -33,6 +33,7 @@ class MovieController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreMovieRequest $request
+     * @return RedirectResponse
      */
     public function store(StoreMovieRequest $request): RedirectResponse
     {
