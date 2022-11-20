@@ -2,10 +2,9 @@
 
 namespace App\Interfaces;
 
-interface HallRepositoryInterface
+interface ShowtimeRepositoryInterface
 {
     public function all();
-    public function allPaginated();
     public function findById(int $id);
     public function destroy(int $id);
 }

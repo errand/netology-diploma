@@ -26,7 +26,7 @@ class HallController extends Controller
      */
     public function index(): Response
     {
-        $halls = $this->hallRepository->all();
+        $halls = $this->hallRepository->allPaginated();
 
         return Inertia::render('Manager', [
             'extraClass' => 'admin',

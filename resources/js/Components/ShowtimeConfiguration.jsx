@@ -149,7 +149,7 @@ export default function ShowtimeConfiguration({halls}) {
                         <div className="conf-step__buttons text-center">
                             <button type="button"
                                     className="conf-step__button conf-step__button-accent" onClick={handleAddMovieSubmit}>Добавить фильм</button>
-                            <button className="conf-step__button conf-step__button-regular" onClick={()=>setShowAddMovieModal(false)}>Отменить</button>
+                            <button type="button" className="conf-step__button conf-step__button-regular" onClick={()=>setShowAddMovieModal(false)}>Отменить</button>
                         </div>
                     </form>
                 </Modal.Content>

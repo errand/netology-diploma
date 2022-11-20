@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Seat;
+use App\Interfaces\SeatRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 
 class SeatController extends Controller
 {
+    private SeatRepositoryInterface $seatRepository;
+
+    public function __construct(SeatRepositoryInterface $seatRepository)
+    {
+        $this->seatRepository = $seatRepository;
+    }
 
     /**
      * Display the specified resource.
@@ -16,19 +23,18 @@ class SeatController extends Controller
      */
     public function show(int $id): Response
     {
-        return Seat::find($id)->first();
-
+        return $this->seatRepository->findById($id);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $hall_id
-     * @return mixed
+     * @return Collection
      */
-    public function showSeatsInHall(int $hall_id): mixed
+    public function showSeatsInHall(int $hall_id): Collection
     {
-        return Seat::where('hall_id', $hall_id)->get();
+        return $this->seatRepository->seatsInHall($hall_id);
 
     }
 
@@ -40,7 +46,7 @@ class SeatController extends Controller
      */
     public function toggleSeat(int $seat_id): mixed
     {
-        $seat = Seat::find($seat_id);
+        $seat = $this->seatRepository->findById($seat_id);
 
         if($seat->vip && !$seat->sold) {
             $seat->update(['sold' => true, 'vip' => false]);
@@ -50,7 +56,7 @@ class SeatController extends Controller
             $seat->update(['vip' => false, 'sold' => false]);
         }
 
-        return Seat::find($seat_id);
+        return $this->seatRepository->findById($seat_id);
 
     }
 

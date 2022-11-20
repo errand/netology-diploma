@@ -5,17 +5,28 @@ namespace App\Repositories;
 use App\Interfaces\HallRepositoryInterface;
 use App\Models\Hall;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class HallRepository implements HallRepositoryInterface
 {
+    /**
+     * Get all Halls
+     *
+     * @return Collection
+     */
+
+    public function all(): Collection
+    {
+        return Hall::all();
+    }
     /**
      * Get all Halls paginated
      *
      * @return LengthAwarePaginator
      */
 
-    public function all(): LengthAwarePaginator
+    public function allPaginated(): LengthAwarePaginator
     {
         return DB::table('halls')->paginate(10);
     }

@@ -6,6 +6,7 @@ use App\Models\Movie;
 use App\Interfaces\MovieRepositoryInterface;
 use App\Http\Requests\StoreMovieRequest;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
 class MovieController extends Controller
@@ -24,7 +25,7 @@ class MovieController extends Controller
      */
     public function index(): Collection
     {
-        $this->movieRepository->all();
+        return $this->movieRepository->all();
     }
 
 
@@ -33,11 +34,10 @@ class MovieController extends Controller
      *
      * @param StoreMovieRequest $request
      */
-    public function store(StoreMovieRequest $request)
+    public function store(StoreMovieRequest $request): RedirectResponse
     {
-        if($request->file('poster')){
-            $path = $request->file('poster')->store('posters', 'public');
-        }
+        $path = $this->movieRepository->handleUploadImage($request->poster);
+
         $movie = new Movie([
             'name' => $request->name,
             'poster' => $path,

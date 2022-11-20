@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hall;
-use App\Models\Movie;
+use App\Interfaces\HallRepositoryInterface;
+use App\Interfaces\MovieRepositoryInterface;
+use App\Interfaces\ShowtimeRepositoryInterface;
 use App\Models\Showtime;
 use App\Http\Requests\StoreShowtimeRequest;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +15,18 @@ use Inertia\Response;
 
 class ShowtimeController extends Controller
 {
+    private ShowtimeRepositoryInterface $showtimeRepository;
+    private HallRepositoryInterface $hallRepository;
+    private MovieRepositoryInterface $movieRepository;
+
+    public function __construct(ShowtimeRepositoryInterface $showtimeRepository,
+                                HallRepositoryInterface $hallRepository,
+                                MovieRepositoryInterface $movieRepository)
+    {
+        $this->showtimeRepository = $showtimeRepository;
+        $this->hallRepository = $hallRepository;
+        $this->movieRepository = $movieRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,9 +35,9 @@ class ShowtimeController extends Controller
     public function index(): Response
     {
 
-        $showtimes = Showtime::all();
-        $halls = Hall::all();
-        $movies = Movie::all();
+        $showtimes = $this->showtimeRepository->all();
+        $halls = $this->hallRepository->all();
+        $movies = $this->movieRepository->all();
 
         return Inertia::render('Welcome', [
             'extraClass' => 'client',
@@ -35,9 +49,15 @@ class ShowtimeController extends Controller
         ]);
     }
 
-    public function showtimes()
+    /**
+     * List all Showtime models
+     *
+     * @return Collection
+     */
+
+    public function showtimes(): Collection
     {
-        return Showtime::all();
+        return $this->showtimeRepository->all();
     }
 
     /**
@@ -57,11 +77,12 @@ class ShowtimeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  integer $id
+     * @param integer $id
+     * @return Response
      */
-    public function show(int $id)
+    public function show(int $id): Response
     {
-        $showtime = Showtime::find($id);
+        $showtime = $this->showtimeRepository->findById($id);
         $hall = $showtime->hall()->first();
         $seats = $hall->seats;
         $movie = $showtime->movie()->first();
